@@ -29,7 +29,7 @@
 
     $stmt1= $conn->prepare("DROP TABLE IF EXISTS tblSession;
     CREATE TABLE tblsession
-    (Session INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+    (SessionID INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Treatment VARCHAR(400) NOT NULL,
     Date DATE NOT NULL,
     Time INT(4) NOT NULL,
