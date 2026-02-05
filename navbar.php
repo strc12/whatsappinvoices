@@ -1,9 +1,11 @@
 <?php
-// navbar.php
+// Start session if not already started
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="index.php">Julia Cunniffe Physiotherapy</a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar">
       <span class="navbar-toggler-icon"></span>
@@ -36,13 +38,19 @@
 
       </ul>
 
-      <!-- Optional right-side links 
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="#">Logout</a>
-        </li>
-      </ul>-->
-
+      <!-- Right side: Logged in indicator -->
+<div class="d-flex align-items-center ms-auto">
+    <?php if (isset($_SESSION['Loggedin']) && $_SESSION['Loggedin'] === true): ?>
+        <span class="text-success me-3">
+            Logged in
+        </span>
+        <a class="btn btn-outline-light btn-sm" href="logout.php">Logout</a>
+    <?php else: ?>
+        <span class="text-warning">
+            Not logged in
+        </span>
+    <?php endif; ?>
+</div>
     </div>
   </div>
 </nav>

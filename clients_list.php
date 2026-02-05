@@ -1,12 +1,18 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 // clients_list.php
 include_once 'connection.php';
 
 // Fetch clients
 try {
-    $stmt = $conn->query("SELECT ClientID, Name, Phonenumber, Email, Address1, Address2, Town, Postcode FROM tblclient ORDER BY Name");
+    $stmt = $conn->query("
+        SELECT ClientID, Name, Phonenumber, Email, Address1, Address2, Town, Postcode 
+        FROM tblclient 
+        ORDER BY Name
+    ");
     $clients = $stmt->fetchAll();
-    
 } catch (PDOException $e) {
     die("Error fetching clients: " . $e->getMessage());
 }
@@ -23,9 +29,20 @@ $success = isset($_GET['success']) ? true : false;
 <title>Client List</title>
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<style>
+    /* Optional: make Delete/Edit buttons full width on mobile */
+    @media (max-width: 576px) {
+        .action-btn {
+            display: block;
+            width: 100%;
+            margin-bottom: 5px;
+        }
+    }
+</style>
 </head>
 <body>
     <?php include 'navbar.php'; ?>
+
 <div class="container my-5">
     <h2 class="mb-4">Clients</h2>
 
@@ -37,46 +54,49 @@ $success = isset($_GET['success']) ? true : false;
         <a href="newclient.php" class="btn btn-primary">Add New Client</a>
     </div>
 
-    <table class="table table-bordered table-striped">
-        <thead class="table-dark">
-            <tr>
-                <th>Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Address1</th>
-                <th>Address2</th>
-                <th>Town</th>
-                <th>Postcode</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php if (count($clients) === 0): ?>
+    <!-- Responsive table -->
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
-                    <td colspan="8" class="text-center">No clients found.</td>
+                    <th>Name</th>
+                    <th class="d-none d-sm-table-cell">Phone</th>
+                    <th class="d-none d-sm-table-cell">Email</th>
+                    <th class="d-none d-sm-table-cell">Address1</th>
+                    <th class="d-none d-md-table-cell">Address2</th>
+                    <th class="d-none d-md-table-cell">Town</th>
+                    <th class="d-none d-md-table-cell">Postcode</th>
+                    
+                    <th>Actions</th>
                 </tr>
-            <?php else: ?>
-                <?php foreach ($clients as $client): ?>
+            </thead>
+            <tbody>
+                <?php if (count($clients) === 0): ?>
                     <tr>
-                        <td><?= htmlspecialchars($client['Name']) ?></td>
-                        <td><?= htmlspecialchars($client['Phonenumber']) ?></td>
-                        <td><?= htmlspecialchars($client['Email']) ?></td>
-                        <td><?= htmlspecialchars($client['Address1']) ?></td>
-                        <td><?= htmlspecialchars($client['Address2']) ?></td>
-                        <td><?= htmlspecialchars($client['Town']) ?></td>
-                        <td><?= htmlspecialchars($client['Postcode']) ?></td>
-                        <td>
-                            <a href="edit_client.php?ClientID=<?= $client['ClientID'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <!-- Delete button triggers modal -->
-                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal" data-clientid="<?= $client['ClientID'] ?>" data-clientname="<?= htmlspecialchars($client['Name']) ?>">
-                                Delete
-                            </button>
-                        </td>
+                        <td colspan="8" class="text-center">No clients found.</td>
                     </tr>
-                <?php endforeach; ?>
-            <?php endif; ?>
-        </tbody>
-    </table>
+                <?php else: ?>
+                    <?php foreach ($clients as $client): ?>
+                        <tr>
+                            <td><?= htmlspecialchars($client['Name']) ?></td>
+                            <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Phonenumber']) ?></td>
+                            <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Email']) ?></td>
+                            <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Address1']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($client['Address2']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($client['Town']) ?></td>
+                            <td class="d-none d-md-table-cell"><?= htmlspecialchars($client['Postcode']) ?></td>
+                            <td>
+                                <a href="edit_client.php?ClientID=<?= $client['ClientID'] ?>" class="btn btn-sm btn-warning action-btn">Edit</a>
+                                <button class="btn btn-sm btn-danger action-btn" data-bs-toggle="modal" data-bs-target="#deleteModal" data-clientid="<?= $client['ClientID'] ?>" data-clientname="<?= htmlspecialchars($client['Name']) ?>">
+                                    Delete
+                                </button>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
+    </div>
 </div>
 
 <!-- Delete Confirmation Modal -->
@@ -112,7 +132,6 @@ deleteModal.addEventListener('show.bs.modal', function (event) {
     var clientID = button.getAttribute('data-clientid');
     var clientName = button.getAttribute('data-clientname');
 
-    // Update modal content
     document.getElementById('modalClientID').value = clientID;
     document.getElementById('modalClientName').textContent = clientName;
 });

@@ -41,4 +41,23 @@
     $stmt1->execute();
     
     echo("session table made");
+
+     $stmt1= $conn->prepare("DROP TABLE IF EXISTS tbladmin;
+    CREATE TABLE tbladmin
+    (password VARCHAR(100) PRIMARY KEY NOT NULL);
+    ");
+    $stmt1->execute();
+    $pword = "admin123";
+    echo("admin table made");
+    echo($pword);
+    $stmt1 = $conn->prepare("
+            INSERT INTO tbladmin (`password`)
+            VALUES (:pword)");
+echo("prepared stmt");
+        // Bind parameters
+    $stmt1->bindParam(':pword', $pword);
+        echo("binding param");
+        // Execute query
+    $stmt1->execute();
+echo("admin password set");
 ?>

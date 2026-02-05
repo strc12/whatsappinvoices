@@ -1,4 +1,7 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 // save_client.php
 include_once 'connection.php';
 print_r($_POST);
@@ -18,7 +21,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($name) || empty($phone)) {
         die("Name and Phone are required fields.");
     }
+    // -------------------------------
+    // Format phone number to always start with +44
+    // -------------------------------
+    // Remove spaces, dashes, brackets
+    $phone = preg_replace('/[^\d+]/', '', $phone);
 
+    // Check if it starts with +44
+    if (strpos($phone, '+44') !== 0) {
+        // Remove leading 0 if present
+        if ($phone[0] === '0') {
+            $phone = substr($phone, 1);
+        }
+        $phone = '+44' . $phone;
+    }
     try {
         // Prepare insert statement
         $stmt = $conn->prepare("

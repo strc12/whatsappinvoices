@@ -1,4 +1,7 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 // edit_client.php
 require 'connection.php';
 

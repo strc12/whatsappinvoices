@@ -1,4 +1,7 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 require 'connection.php';
 print_r($_POST);
 // Validate input
@@ -14,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$clientID || !$treatment || !$date || !$duedate || !$time || !$total) {
         die("Please fill in all required fields.");
     }
-
+    $sendWhatsapp   = isset($_POST['sendWhatsapp']) && $_POST['sendWhatsapp'] == '1';
     try {
         // Insert session into tblsession
         $stmt = $conn->prepare("INSERT INTO tblsession (treatment, Date, Time, ClientID, Total, Paid, Duedate)
@@ -37,14 +40,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (!$client) {
             die("Client not found.");
         }
-
+if ($sendWhatsapp) {
         // Format WhatsApp message
         $name = $client['Name'];
+        $formattedDate    = date('d/m/y', strtotime($date));
+        $formattedDueDate = date('d/m/y', strtotime($duedate));
         $phone = preg_replace('/\D+/', '', $client['Phonenumber']); // digits only
         $message = "Hello $name,\n";
-        $message .= "Payment for your $treatment session $time minutes on $date.\n";
+        $message .= "Payment for your $treatment session $time minutes on $formattedDate.\n";
         $message .= "Total: £$total\n";
-        $message .= "Due: $duedate.";
+        $message .= "Due: $formattedDueDate.";
         $message .= "\nMany thanks\nJulia";
         $encodedMessage = urlencode($message);
         $whatsappURL = "https://wa.me/$phone?text=$encodedMessage";
@@ -58,10 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         header("Location: $whatsappURL");
         //header("Location: index.php?success=1&wa=" . urlencode($whatsappURL));
         exit;
-
+}
     } catch (PDOException $e) {
         die("Error saving session: " . $e->getMessage());
     }
 } else {
     die("Invalid request.");
 }
+?>

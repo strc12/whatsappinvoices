@@ -1,4 +1,7 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 include_once 'connection.php';
 
 /*
@@ -69,54 +72,55 @@ foreach ($sessions as $session) {
 </head>
 
 <body>
+    <?php include 'navbar.php'; ?>
 <div class="container my-5">
     <h2 class="mb-4">Sessions</h2>
 
     <table class="table table-bordered table-striped">
-        <thead class="table-dark">
+    <thead class="table-dark">
+        <tr>
+            <th>Date</th>
+            <th>Client</th>
+            <th class="d-none d-sm-table-cell">Treatment</th>
+            <th class="d-none d-md-table-cell">Time (mins)</th>
+            <th>Total (£)</th>
+            <th>Paid</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    <?php if (count($sessions) === 0): ?>
+        <tr>
+            <td colspan="7" class="text-center">No sessions found.</td>
+        </tr>
+    <?php else: ?>
+        <?php foreach ($sessions as $session): ?>
             <tr>
-                <th>Date</th>
-                <th>Client</th>
-                <th>Treatment</th>
-                <th>Time (mins)</th>
-                <th>Total (£)</th>
-                <th>Paid</th>
-                <th>Action</th>
+                <td><?= date('d-m-Y', strtotime($session['Date'])) ?></td>
+                <td><?= htmlspecialchars($session['ClientName']) ?></td>
+                <td class="d-none d-sm-table-cell"><?= htmlspecialchars($session['Treatment']) ?></td>
+                <td class="d-none d-md-table-cell"><?= (int)$session['Time'] ?></td>
+                <td>£<?= number_format($session['Total'], 2) ?></td>
+                <td class="text-center">
+                    <?php if ($session['Paid']): ?>
+                        <span class="badge bg-success d-inline-block text-center" style="width: 100px;">Paid</span>
+                    <?php else: ?>
+                        <span class="badge bg-danger d-inline-block text-center" style="width: 100px;">Unpaid</span>
+                    <?php endif; ?>
+                </td>
+                <td>
+                    <a 
+                        href="sessions_list.php?toggle_paid=<?= $session['SessionID'] ?>" 
+                        class="btn btn-sm <?= $session['Paid'] ? 'btn-secondary' : 'btn-success' ?> w-100"
+                    >
+                        <?= $session['Paid'] ? 'Mark Unpaid' : 'Mark Paid' ?>
+                    </a>
+                </td>
             </tr>
-        </thead>
-        <tbody>
-        <?php if (count($sessions) === 0): ?>
-            <tr>
-                <td colspan="7" class="text-center">No sessions found.</td>
-            </tr>
-        <?php else: ?>
-            <?php foreach ($sessions as $session): ?>
-                <tr>
-                    <td><?= date('d-m-Y', strtotime($session['Date'])) ?></td>
-                    <td><?= htmlspecialchars($session['ClientName']) ?></td>
-                    <td><?= htmlspecialchars($session['Treatment']) ?></td>
-                    <td><?= (int)$session['Time'] ?></td>
-                    <td>£<?= number_format($session['Total'], 2) ?></td>
-                    <td class="text-center">
-                        <?php if ($session['Paid']): ?>
-                            <span class="badge bg-success d-inline-block text-center" style="width: 100px;">Paid</span>
-                        <?php else: ?>
-                            <span class="badge bg-danger d-inline-block text-center" style="width: 100px;">Unpaid</span>
-                        <?php endif; ?>
-                    </td>
-                    <td>
-                        <a 
-                            href="sessions_list.php?toggle_paid=<?= $session['SessionID'] ?>" 
-                            class="btn btn-sm <?= $session['Paid'] ? 'btn-secondary' : 'btn-success' ?> w-100"
-                        >
-                            <?= $session['Paid'] ? 'Mark Unpaid' : 'Mark Paid' ?>
-                        </a>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php endif; ?>
-        </tbody>
-    </table>
+        <?php endforeach; ?>
+    <?php endif; ?>
+    </tbody>
+</table>
 
     <!-- Totals -->
     <div class="row mt-4">
@@ -132,7 +136,7 @@ foreach ($sessions as $session) {
         </div>
     </div>
 
-    <a href="new_session.php" class="btn btn-primary mt-3">Add New Session</a>
+    <a href="session.php" class="btn btn-primary mt-3">Add New Session</a>
 </div>
 
 <!-- Bootstrap JS -->

@@ -1,4 +1,7 @@
 <?php
+require_once 'auth.php';
+?>
+<?php
 
 include_once 'connection.php';
 
@@ -69,7 +72,12 @@ $defaultTime = 60;
             <input type="checkbox" class="form-check-input" id="paid" name="Paid" value="1">
             <label class="form-check-label" for="paid">Paid</label>
         </div>
-
+        <div class="form-check mb-3">
+        <input class="form-check-input" type="checkbox" value="1" id="sendWhatsapp" name="sendWhatsapp">
+        <label class="form-check-label" for="sendWhatsapp">
+            Send WhatsApp message
+        </label>
+        </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Save Session</button>
         </div>
