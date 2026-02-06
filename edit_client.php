@@ -28,15 +28,16 @@ try {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['Name'];
     $phone = $_POST['Phonenumber'];
+    $famname=$_POST["FamiliarName"];
     $email = $_POST['Email'];
     $address1 = $_POST['Address1'];
     $address2 = $_POST['Address2'];
     $town = $_POST['Town'];
     $postcode = $_POST['Postcode'];
 
-    if ($name && $phone && $email && $address1 && $town && $postcode) {
+    if ($name && $phone && $email && $address1 && $town && $postcode && $famname) {
         try {
-            $update = $conn->prepare("UPDATE tblclient SET Name = :name, Phonenumber = :phone, Email = :email, 
+            $update = $conn->prepare("UPDATE tblclient SET Name = :name, FamiliarName =:famname, Phonenumber = :phone, Email = :email, 
                                      Address1 = :address1, Address2 = :address2, Town = :town, Postcode = :postcode 
                                      WHERE ClientID = :id");
             $update->execute([
@@ -47,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ':address2' => $address2,
                 ':town' => $town,
                 ':postcode' => $postcode,
-                ':id' => $clientID
+                ':id' => $clientID,
+                ':famname'=>$famname
             ]);
 
             header("Location: clients_list.php?success=1");
@@ -93,6 +95,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <div class="col-md-6">
             <label for="email" class="form-label">Email *</label>
             <input type="email" id="email" name="Email" class="form-control" value="<?= htmlspecialchars($client['Email']) ?>" required>
+        </div>
+        <div class="col-md-6">
+            <label for="FamiliarName" class="form-label">Familiar Name *</label>
+            <input type="text" id="FamiliarName" name="FamiliarName" class="form-control" value="<?= htmlspecialchars($client['FamiliarName']) ?>"required>
         </div>
 
         <!-- Address Group -->

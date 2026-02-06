@@ -67,7 +67,7 @@ $defaultTime = 60;
             <input type="number" step="0.01" id="total" name="Total" class="form-control" required>
         </div>
 
-        <div class="col-12 form-check">
+        <!--<div class="col-12 form-check">
             <input type="hidden" name="Paid" value="0">
             <input type="checkbox" class="form-check-input" id="paid" name="Paid" value="1">
             <label class="form-check-label" for="paid">Paid</label>
@@ -77,7 +77,7 @@ $defaultTime = 60;
         <label class="form-check-label" for="sendWhatsapp">
             Send WhatsApp message
         </label>
-        </div>
+        </div> -->
         <div class="col-12">
             <button type="submit" class="btn btn-primary">Save Session</button>
         </div>

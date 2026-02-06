@@ -2,7 +2,7 @@
     #create varialbes with server details on
     $servername="localhost";
     $username="root";
-    $password="password";
+    $password="root";
 
     $conn=new PDO("mysql:host=$servername",$username,$password);
     $conn->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
@@ -15,6 +15,7 @@
     CREATE TABLE tblclient
     (ClientID INT(4) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     Name VARCHAR(20) NOT NULL,
+    FamiliarName VARCHAR(20) NOT NULL,
     Phonenumber VARCHAR(20) NOT NULL,
     Email VARCHAR(50) NOT NULL,
     Address1 VARCHAR(100) NOT NULL,
@@ -41,6 +42,13 @@
     $stmt1->execute();
     
     echo("session table made");
+    //need to make invoice table
+ $stmt1= $conn->prepare("DROP TABLE IF EXISTS tblinvoice;
+    CREATE TABLE tblinvoice
+    (Invoicenumber Unsigned) PRIMARY KEY NOT NULL);
+    ");
+    $stmt1->execute();
+
 
      $stmt1= $conn->prepare("DROP TABLE IF EXISTS tbladmin;
     CREATE TABLE tbladmin

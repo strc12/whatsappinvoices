@@ -33,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ]);
 
         // Get client info for WhatsApp message
-        $stmt2 = $conn->prepare("SELECT Name, Phonenumber FROM tblclient WHERE ClientID = :id");
+        $stmt2 = $conn->prepare("SELECT Name, FamiliarName, Phonenumber FROM tblclient WHERE ClientID = :id");
         $stmt2->execute([':id' => $clientID]);
         $client = $stmt2->fetch();
 
@@ -42,14 +42,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 if ($sendWhatsapp) {
         // Format WhatsApp message
-        $name = $client['Name'];
+        $name = $client['FamiliarName'];
         $formattedDate    = date('d/m/y', strtotime($date));
         $formattedDueDate = date('d/m/y', strtotime($duedate));
         $phone = preg_replace('/\D+/', '', $client['Phonenumber']); // digits only
         $message = "Hello $name,\n";
-        $message .= "Payment for your $treatment session $time minutes on $formattedDate.\n";
+        $message .= "Here is the invoice  for your $treatment session $time minutes on $formattedDate.\n";// need to collate all treatements making up invoice
         $message .= "Total: £$total\n";
         $message .= "Due: $formattedDueDate.";
+        $message .= "\n Please quote invoice number $invoicenumber  when you make a bank transfer.";
+
         $message .= "\nMany thanks\nJulia";
         $encodedMessage = urlencode($message);
         $whatsappURL = "https://wa.me/$phone?text=$encodedMessage";

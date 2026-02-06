@@ -1,7 +1,7 @@
 <?php
     $servername="localhost";
     $username="root";
-    $password="password";
+    $password="root";
     $dbname="invoiceapp";
     try{
         $conn=new PDO("mysql:host=$servername;dbname=$dbname",$username,$password);

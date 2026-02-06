@@ -8,7 +8,7 @@ include_once 'connection.php';
 // Fetch clients
 try {
     $stmt = $conn->query("
-        SELECT ClientID, Name, Phonenumber, Email, Address1, Address2, Town, Postcode 
+        SELECT ClientID, Name, FamiliarName, Phonenumber, Email, Address1, Address2, Town, Postcode 
         FROM tblclient 
         ORDER BY Name
     ");
@@ -60,6 +60,7 @@ $success = isset($_GET['success']) ? true : false;
             <thead class="table-dark">
                 <tr>
                     <th>Name</th>
+                    <th>Familiar Name</th>
                     <th class="d-none d-sm-table-cell">Phone</th>
                     <th class="d-none d-sm-table-cell">Email</th>
                     <th class="d-none d-sm-table-cell">Address1</th>
@@ -79,6 +80,7 @@ $success = isset($_GET['success']) ? true : false;
                     <?php foreach ($clients as $client): ?>
                         <tr>
                             <td><?= htmlspecialchars($client['Name']) ?></td>
+                            <td><?= htmlspecialchars($client['FamiliarName']) ?></td>
                             <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Phonenumber']) ?></td>
                             <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Email']) ?></td>
                             <td class="d-none d-sm-table-cell"><?= htmlspecialchars($client['Address1']) ?></td>

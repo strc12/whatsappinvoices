@@ -35,6 +35,16 @@ if (session_status() === PHP_SESSION_NONE) {
             <li><a class="dropdown-item" href="sessions_list.php">View Sessions</a></li>
           </ul>
         </li>
+        <!-- Sessions -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+            Invoices
+          </a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="session.php">Build Invoice</a></li>
+            <li><a class="dropdown-item" href="sessions_list.php">View Invoices</a></li>
+          </ul>
+        </li>
 
       </ul>
 

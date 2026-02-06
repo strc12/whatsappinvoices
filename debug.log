@@ -76,3 +76,36 @@
     [Stored] => admin123
 )
 
+[2026-02-05 19:47:08] Array
+(
+    [POST] => Array
+        (
+            [admin_password] => admin123
+        )
+
+)
+
+[2026-02-05 19:53:01] Array
+(
+    [POST] => Array
+        (
+            [admin_password] => admin123
+        )
+
+)
+
+[2026-02-05 19:53:23] Array
+(
+    [POST] => Array
+        (
+            [admin_password] => admin123
+        )
+
+)
+
+[2026-02-05 19:53:23] Array
+(
+    [Input] => admin123
+    [Stored] => admin123
+)
+

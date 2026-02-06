@@ -39,6 +39,10 @@ require_once 'auth.php';
             <label for="email" class="form-label">Email *</label>
             <input type="email" id="email" name="Email" class="form-control" required>
         </div>
+        <div class="col-md-6">
+            <label for="FamiliarName" class="form-label">Familiar Name *</label>
+            <input type="text" id="FamiliarName" name="FamiliarName" class="form-control" required>
+        </div>
 
         <!-- Address Group -->
         <div class="col-12">
